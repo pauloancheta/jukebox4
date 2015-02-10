@@ -1,0 +1,101 @@
+<html>
+
+  <head>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/cyborg/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="app.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="player.js"></script>
+    <script src="app.js"></script>
+
+
+    <script>
+      $(document).ready(function(){
+        $('.alert-info').fadeIn(800, function() {
+          setTimeout(function(){
+            $('.alert-info').fadeOut();
+          }, 3000);
+        });
+
+
+        $('.fa-trash').on('click', function(){
+          $(this).parent().slideUp('fast', function(){
+            $(this).remove();
+          });
+        });
+
+        $('.notes').hide();
+        $(document).on('dblclick', '.title', function() {
+          $(this).siblings('.notes').slideToggle(300);
+        });
+
+        $('li').on('mouseover', function() {
+          $(this).children('.fa-trash').css('opacity', '1');
+          $(this).addClass('lighten');
+        });
+
+        $('li').on('mouseleave', function() {
+          $(this).children('.fa-trash').css('opacity', '.3');
+          $(this).removeClass('lighten');
+        });
+
+        $('ul').sortable();
+
+        $('#playlist-list, #library-list').sortable({
+          connectWith: ".connectList"
+        });
+
+        $('input[type="text"]').on('keyup', function(){
+          var search = $(this).val();
+          $('.ui-sortable-handle').hide()
+          $('.ui-sortable-handle:contains(' + search + ')').fadeIn();
+        });
+
+        $('#play-button').on('click', function() {
+          if( $('#playlist-list li').length < 1 ){
+            $(this).removeClass('animate', function() {
+              $(this).addClass('animate');
+            });
+          }
+        });
+
+
+      });
+    </script>
+
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="page-header">JukeBox</h1>
+
+      <div class="row">
+
+        <!-- Playlist -->
+        <section class="playlist col-md-6">
+          <h2>Playlist</h2>
+          <ul id="playlist-list" class="connectList"></ul>
+          <a id="play-button" href="#" class="btn btn-primary btn-block btn-lg">Play All</a>
+        </section>
+
+        <!-- Library -->
+        <section class="library col-md-6">
+          <h2><input type="text" id="filter-library" class="form-control" placeholder="Filter..."/>Library</h2>
+          <ul id="library-list" class="connectList"></ul>
+        </section>
+
+      </div>
+
+      <!-- Messages -->
+      <div id="message" class="alert alert-info">
+        <h4>Welcome to Jukebox!</h4>
+        <p>Add some songs to the Playlist to start listening.</p>
+      </div>
+
+    </div>
+  </body>
+
+</html>
